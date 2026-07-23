@@ -22,7 +22,8 @@ https://app.geoly.ai/api/mcp
 - **品牌硬碰硬对比** —— 2–4 个品牌在可见度、覆盖面、引用、品类排名上并排比较（`compare_public_brands`）。
 - **绘制品类空白地图** —— 把品类下每个话题划分为优势区（covered / leading / close / defend）与机会区（prioritize / gap / watch）（`get_category_whitespace`）。
 - **追踪动量。** 谁在 AI 回答中的 Share of Mention 环比上升、谁在下滑（`get_category_brand_momentum`）？
-- **看清 AI 搜索需求** —— 用户在你的产品领域实际问 AI 什么，哪些品牌赢下了这些回答（`get_public_search_queries`）。
+- **看清 AI 搜索需求** —— 用户在你的产品领域实际问 AI 什么、哪些品牌赢下了这些回答、每个需求词根领地被谁占住（`get_public_search_queries`）。
+- **盯住 AI 货架。** 全品类 AI 最爱推荐哪些商品、谁在周环比蹿升（`list_public_shopping_boards`），任一商品的完整 AI 面孔（`get_public_shopping_product_detail`）。
 - **量化竞争难度** —— 每个话题一个 0–100 的"AI 时代关键词难度"（`get_topic_competition_difficulty`）。
 - **剖析 AI 认知画像。** AI 模型如何描述一个品牌？认知维度、正负极性、原文证据（`get_public_brand_perception`）。
 - **审计 AI 就绪度** —— 覆盖可访问性、结构化数据、内容结构、技术项的 GEO 站点审计（`get_audit_detail`）。
@@ -34,6 +35,7 @@ https://app.geoly.ai/api/mcp
 > - "对比一下 Anker 和 Soundcore 在便携音频品类的 AI 可见度。"
 > - "我的品类里空白机会在哪？哪些话题应该优先攻？"
 > - "我所在行业 AI 引擎最爱引用哪些网站？我们上榜了吗？"
+> - "这周 AI 购物货架上谁在蹿升？reddit.com 又在哪些话题里把 AI 导向我的竞品？"
 > - "把我最近一次 GEO 站点审计过一遍，列出严重问题。"
 
 ## 快速开始
@@ -200,9 +202,9 @@ geoly call get_brand_overview --time_range 30d
 | 市场情报 — 话题 | 10 | 品牌榜（`get_public_topic_brand_leaderboard`）、竞争难度（`get_topic_competition_difficulty`） |
 | 市场情报 — 品牌 | 4 | 多品牌对比（`compare_public_brands`）、AI 认知画像（`get_public_brand_perception`） |
 | 市场情报 — 品类 | 3 | 空白机会地图（`get_category_whitespace`）、品牌动量（`get_category_brand_momentum`） |
-| 市场情报 — AI 搜索 query | 2 | AI 搜索需求全景（`get_public_search_queries`） |
-| 市场情报 — 购物 | 2 | 商品全景（`list_public_shopping_products`） |
-| 公开信源域名 | 2 | 全网最常被引信源榜（`get_public_sources_overview`） |
+| 市场情报 — AI 搜索 query | 2 | AI 搜索需求全景+需求领地（`get_public_search_queries`） |
+| 市场情报 — 购物 | 4 | AI 货架榜（`list_public_shopping_boards`）、商品全景（`get_public_shopping_product_detail`） |
+| 公开信源域名 | 3 | 最常被引信源榜（`get_public_sources_overview`）、源×品牌导管（`get_public_source_brand_conduit`） |
 | 写入工具 | 4 | 建 prompt/话题/竞品、立即触发监控（`trigger_prompt`） |
 | 报告、发现与路由 | 5 | Agent Readiness 报告（`get_agent_ready_scan_detail`）、工作区列表（`list_organizations`） |
 

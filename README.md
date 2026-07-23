@@ -22,7 +22,8 @@ https://app.geoly.ai/api/mcp
 - **Compare brands head-to-head** — 2–4 brands side by side on visibility, footprint, citations, and category ranking across AI engines (`compare_public_brands`).
 - **Map category whitespace** — every topic in a category classified into strengths (covered / leading / close / defend) and opportunities (prioritize / gap / watch) for your brand (`get_category_whitespace`).
 - **Track momentum.** Who is gaining or losing Share of Mention in AI answers, period over period (`get_category_brand_momentum`)?
-- **See AI-search demand** — what people actually ask AI in your product space, and which brands win those answers (`get_public_search_queries`).
+- **See AI-search demand** — what people actually ask AI in your product space, which brands win those answers, and which demand territories each brand owns (`get_public_search_queries`).
+- **Watch the AI shelf.** Which products AI recommends most across every category, who is climbing week over week (`list_public_shopping_boards`), and any single product's full AI profile (`get_public_shopping_product_detail`).
 - **Score competition difficulty** — a 0–100 "keyword difficulty for the AI era" per topic (`get_topic_competition_difficulty`).
 - **Profile AI perception.** How do AI models describe a brand? Canonical aspects, polarity, and verbatim evidence (`get_public_brand_perception`).
 - **Audit AI readiness** — GEO site audits covering accessibility, structured data, content structure, and technical checks (`get_audit_detail`).
@@ -36,6 +37,7 @@ Once connected, ask your agent things like:
 > - "Compare Anker vs Soundcore visibility in the portable-audio category."
 > - "Where's the whitespace in my category — which topics should we prioritize?"
 > - "Which domains do AI engines cite most in my industry, and are we on any of them?"
+> - "Which products are climbing the AI shopping shelf this week — and in which topics does reddit.com steer AI toward my competitor?"
 > - "Run down my latest GEO site audit and list the critical issues."
 
 ## Quick start
@@ -246,7 +248,7 @@ Agencies and multi-workspace users: a single connection can span every workspace
 
 | Tool | What it returns |
 | --- | --- |
-| `search_public_entities` | Free-text resolver: brand / category / topic name or domain → public IDs |
+| `search_public_entities` | Free-text resolver: brand / category / topic / product name or domain → public IDs (products via `include_products`) |
 | `list_public_topics` | Browse public topics, with status/search filters |
 | `list_public_locales` | Valid {country, language} pairs for an entity |
 | `get_available_platforms` | Which AI platforms have data for a scope, ordered by volume |
@@ -287,22 +289,25 @@ Agencies and multi-workspace users: a single connection can span every workspace
 
 | Tool | What it returns |
 | --- | --- |
-| `get_public_search_queries` | AI-search demand for a product space: queries, themes, brand landscape |
+| `get_public_search_queries` | AI-search demand for a product space: queries, themes, brand landscape, demand territories |
 | `get_public_search_query_detail` | Drill-down on one query or theme: brands, prompts, top sources |
 
-### Market intelligence — shopping (2)
+### Market intelligence — shopping (4)
 
 | Tool | What it returns |
 | --- | --- |
+| `list_public_shopping_boards` | The cross-category AI shelf leaderboard: hot / climbers / entrants with week-over-week rank moves |
+| `get_public_shopping_product_detail` | One product's full AI analysis: shelves, weekly trend, rivals, channels |
 | `list_public_shopping_products` | Shopping overview for a product-space slice: products, channels, price bands |
-| `get_public_shopping_card_detail` | One product card in full: evidence, topics, prompts, retail offers |
+| `get_public_shopping_card_detail` | One product card preview: evidence, topics, prompts, retail offers |
 
-### Public source domains (2)
+### Public source domains (3)
 
 | Tool | What it returns |
 | --- | --- |
-| `get_public_sources_overview` | Most-cited source domains across all public topics |
-| `get_public_source_domain_detail` | One citation source domain: coverage, co-occurring brands |
+| `get_public_sources_overview` | Most-cited source domains across all public topics, each with its AI DA score |
+| `get_public_source_domain_detail` | One citation source domain: coverage, co-occurring brands, optional full AI DA scorecard |
+| `get_public_source_brand_conduit` | The topics where one source domain funnels AI attention toward one brand |
 
 ### Write tools (4)
 

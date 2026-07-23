@@ -138,7 +138,7 @@ curl -s -o /dev/null -w "%{http_code}" -X POST https://app.geoly.ai/api/mcp \
 
 ## Available tools (summary)
 
-60+ read-mostly tools across: brand KPIs and daily trends, prompt-level visibility and AI answers, citation domains/pages, competitors and sentiment, GEO site audits, GA4, market intelligence (topic leaderboards, brand comparison, category whitespace, brand momentum, AI-search demand, shopping), public source domains, and 4 write tools (create prompt/topic/competitor, trigger monitoring). The tool surface adapts to plan and granted permissions — see the [README](./README.md#tools) for the full catalog.
+60+ read-mostly tools across: brand KPIs and daily trends, prompt-level visibility and AI answers, citation domains/pages, competitors and sentiment, GEO site audits, GA4, market intelligence (topic leaderboards, brand comparison, category whitespace, brand momentum, AI-search demand with territory maps, the cross-category AI shelf leaderboard, product deep-dives), public source domains (AI DA scorecards, source-to-brand conduits), and 4 write tools (create prompt/topic/competitor, trigger monitoring). The tool surface adapts to plan and granted permissions — see the [README](./README.md#tools) for the full catalog.
 
 ## Troubleshooting
 
