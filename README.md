@@ -202,13 +202,14 @@ Agencies and multi-workspace users: a single connection can span every workspace
 | `query_analytics` | Controlled aggregation (no SQL) over daily datasets — dimensions, metrics, filters, prompt-text subsets |
 | `resolve_my_brand_public` | Bridge from your monitored brand to its public market-intelligence profile |
 
-### Brand monitoring — prompts & answers (6)
+### Brand monitoring — prompts & answers (7)
 
 | Tool | What it returns |
 | --- | --- |
 | `get_prompt_list` | Search/list monitored prompts with visibility stats |
 | `get_prompt_detail` | One prompt in full: per-platform performance, AIGVR, Share of Model, competitor mentions |
 | `get_prompt_record_summaries` | Latest monitoring record per platform for one prompt |
+| `list_prompt_records` | Full execution history of one prompt over a time range, paginated — per-day trend work |
 | `get_prompt_record_detail` | One monitored AI answer in full: text, citations, sentiment |
 | `get_prompt_citations` | Citations for a prompt — raw or deduplicated URL list with share % |
 | `get_prompt_mention_rates` | Per-prompt mention rate, ascending — blind-spot discovery |
