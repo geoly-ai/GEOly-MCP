@@ -7,7 +7,7 @@ English | [简体中文](./README.zh-CN.md)
 
 # GEOly MCP Server
 
-The official remote MCP server for **[GEOly](https://www.geoly.ai)** — AI brand visibility (GEO) for your agent. GEOly tracks how brands are mentioned and cited across AI engines (ChatGPT, Gemini, Perplexity, Grok, Google AI), and this server puts that data — visibility KPIs, competitor share, citation sources, market intelligence, and site audits — directly into Claude, Cursor, Codex, VS Code, or any MCP client.
+The official remote MCP server for **[GEOly](https://www.geoly.ai)** — AI brand visibility (GEO) for your agent. GEOly tracks how brands are mentioned and cited across AI engines (ChatGPT, Perplexity, Google AI Mode, Google AI Overview, Gemini, Copilot), and this server puts that data — visibility KPIs, competitor share, citation sources, market intelligence, and site audits — directly into Claude, Cursor, Codex, VS Code, or any MCP client.
 
 Hosted, streamable HTTP, OAuth in the browser. One URL, nothing to run locally:
 

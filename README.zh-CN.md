@@ -7,7 +7,7 @@
 
 # GEOly MCP Server
 
-**[GEOly](https://www.geoly.ai)** 官方远程 MCP server —— 把 AI 品牌可见度（GEO）数据接进你的 agent。GEOly 持续追踪品牌在各大 AI 引擎（ChatGPT、Gemini、Perplexity、Grok、Google AI）回答中的提及与引用情况；这个 server 把这些数据——可见度 KPI、竞品份额、引用信源、行业市场情报、站点审计——直接送进 Claude、Cursor、Codex、VS Code 或任何 MCP 客户端。
+**[GEOly](https://www.geoly.ai)** 官方远程 MCP server —— 把 AI 品牌可见度（GEO）数据接进你的 agent。GEOly 持续追踪品牌在各大 AI 引擎（ChatGPT、Perplexity、Google AI Mode、Google AI Overview、Gemini、Copilot）回答中的提及与引用情况；这个 server 把这些数据——可见度 KPI、竞品份额、引用信源、行业市场情报、站点审计——直接送进 Claude、Cursor、Codex、VS Code 或任何 MCP 客户端。
 
 云端托管、streamable HTTP、浏览器内 OAuth。一个 URL，本地零部署：
 
