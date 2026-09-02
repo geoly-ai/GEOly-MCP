@@ -272,7 +272,7 @@ Agencies and multi-workspace users: a single connection can span every workspace
 | `get_public_topic_commerce` | Commerce aggregate: activation rate, price stats, retail channels |
 | `get_topic_competition_difficulty` | AI-visibility difficulty 0–100, like SEO keyword difficulty |
 
-### Market intelligence — brands (4)
+### Market intelligence — brands (5)
 
 | Tool | What it returns |
 | --- | --- |
@@ -280,6 +280,7 @@ Agencies and multi-workspace users: a single connection can span every workspace
 | `get_public_brand_perception` | AI perception profile: canonical aspects + polarity + evidence |
 | `get_public_brand_perception_aspect_mentions` | Drill-down: source mentions behind one perception aspect |
 | `compare_public_brands` | Side-by-side comparison of 2–4 brands on one facet |
+| `get_public_brand_rank_citation` | Google AI Overview only: organic top-10 rankings × AI citations — coverage, four quadrants, displacer domains |
 
 ### Market intelligence — categories, whitespace & momentum (3)
 

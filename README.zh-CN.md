@@ -200,7 +200,7 @@ geoly call get_brand_overview --time_range 30d
 | 站点审计与 GA4 | 4 | GEO 审计详情（`get_audit_detail`）、GA4 流量（`get_ga4_traffic_data`） |
 | 市场情报 — 检索与浏览 | 4 | 实体解析（`search_public_entities`）、话题浏览（`list_public_topics`） |
 | 市场情报 — 话题 | 10 | 品牌榜（`get_public_topic_brand_leaderboard`）、竞争难度（`get_topic_competition_difficulty`） |
-| 市场情报 — 品牌 | 4 | 多品牌对比（`compare_public_brands`）、AI 认知画像（`get_public_brand_perception`） |
+| 市场情报 — 品牌 | 5 | 多品牌对比（`compare_public_brands`）、AI 认知画像（`get_public_brand_perception`）、排名×引用（`get_public_brand_rank_citation`） |
 | 市场情报 — 品类 | 3 | 空白机会地图（`get_category_whitespace`）、品牌动量（`get_category_brand_momentum`） |
 | 市场情报 — AI 搜索 query | 2 | AI 搜索需求全景+需求领地（`get_public_search_queries`） |
 | 市场情报 — 购物 | 4 | AI 货架榜（`list_public_shopping_boards`）、商品全景（`get_public_shopping_product_detail`） |
