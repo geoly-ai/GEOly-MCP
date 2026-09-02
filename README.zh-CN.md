@@ -194,9 +194,9 @@ geoly call get_brand_overview --time_range 30d
 | 分组 | 数量 | 内容（代表工具） |
 | --- | --- | --- |
 | 品牌监控 — 总览与 KPI | 4 | AIGVR/提及率/引用率（`get_brand_overview`）、受控聚合（`query_analytics`） |
-| 品牌监控 — prompt 与回答 | 7 | prompt 详情（`get_prompt_detail`）、执行历史（`list_prompt_records`）、盲区发现（`get_prompt_mention_rates`） |
+| 品牌监控 — prompt 与回答 | 8 | prompt 详情（`get_prompt_detail`）、执行历史（`list_prompt_records`）、盲区发现（`get_prompt_mention_rates`） |
 | 品牌监控 — 引用、域名与页面 | 5 | 引用域名分布（`get_citation_overview`）、内容机会（`get_content_opportunities`） |
-| 品牌监控 — 竞品、话题与情感 | 7 | 竞品对比（`get_competitor_overview`）、平台矩阵（`get_platform_matrix`）、情感面板（`get_sentiment_dashboard`） |
+| 品牌监控 — 竞品、话题与情感 | 9 | 竞品对比（`get_competitor_overview`）、竞品极性榜（`get_competitor_polarity`）、风险语境信源（`get_risk_context_sources`）、情感面板（`get_sentiment_dashboard`） |
 | 站点审计与 GA4 | 4 | GEO 审计详情（`get_audit_detail`）、GA4 流量（`get_ga4_traffic_data`） |
 | 市场情报 — 检索与浏览 | 4 | 实体解析（`search_public_entities`）、话题浏览（`list_public_topics`） |
 | 市场情报 — 话题 | 10 | 品牌榜（`get_public_topic_brand_leaderboard`）、竞争难度（`get_topic_competition_difficulty`） |
