@@ -202,7 +202,7 @@ Agencies and multi-workspace users: a single connection can span every workspace
 | `query_analytics` | Controlled aggregation (no SQL) over daily datasets — dimensions, metrics, filters, prompt-text subsets |
 | `resolve_my_brand_public` | Bridge from your monitored brand to its public market-intelligence profile |
 
-### Brand monitoring — prompts & answers (7)
+### Brand monitoring — prompts & answers (8)
 
 | Tool | What it returns |
 | --- | --- |
@@ -213,6 +213,7 @@ Agencies and multi-workspace users: a single connection can span every workspace
 | `get_prompt_record_detail` | One monitored AI answer in full: text, citations, sentiment |
 | `get_prompt_citations` | Citations for a prompt — raw or deduplicated URL list with share % |
 | `get_prompt_mention_rates` | Per-prompt mention rate, ascending — blind-spot discovery |
+| `get_brand_search_queries` | Query-fanout demand roots: the real web searches the AI ran while answering your prompts (ChatGPT, 90 days) |
 
 ### Brand monitoring — citations, domains & pages (5)
 
@@ -224,16 +225,18 @@ Agencies and multi-workspace users: a single connection can span every workspace
 | `get_url_reference_detail` | A URL's references across citations and search sources |
 | `get_content_opportunities` | Content-gap analysis: prompts where a domain has low or no citations |
 
-### Brand monitoring — competitors, topics & sentiment (7)
+### Brand monitoring — competitors, topics & sentiment (9)
 
 | Tool | What it returns |
 | --- | --- |
 | `get_competitor_list` | Tracked competitors for the brand |
 | `get_competitor_overview` | Cross-prompt competitor comparison |
 | `get_competitor_cooccurrence` | Brand + competitor co-occurrence, with optional answer text |
+| `get_competitor_polarity` | AI Verdict: per-answer preference polarity vs each competitor (weLose / tie / weWin, net loss) |
 | `get_platform_matrix` | Brand + competitors × platform matrix, or topics × platform |
 | `get_topic_analytics` | Per-topic analysis: sentiment, competitors, response types, trends |
 | `get_sentiment_dashboard` | Sentiment distribution, trends, platform comparison |
+| `get_risk_context_sources` | AI Verdict: cited domains over-represented in negative / mixed answers, with lift (7-day window) |
 | `get_brand_mention_samples` | Recent AI answers mentioning the brand: raw text + sentiment + context |
 
 ### Site audits & GA4 (4)
