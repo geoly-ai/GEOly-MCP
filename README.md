@@ -277,10 +277,10 @@ Agencies and multi-workspace users: a single connection can span every workspace
 | Tool | What it returns |
 | --- | --- |
 | `get_public_brand` | One public brand across topics, faceted: visibility, footprint, competitors, citations, ranking |
+| `get_public_brand_rank_citation` | Google AI Overview rankings × AI citations: coverage, four search-counting quadrants, displacers, and paginated per-search detail |
 | `get_public_brand_perception` | AI perception profile: canonical aspects + polarity + evidence |
 | `get_public_brand_perception_aspect_mentions` | Drill-down: source mentions behind one perception aspect |
 | `compare_public_brands` | Side-by-side comparison of 2–4 brands on one facet |
-| `get_public_brand_rank_citation` | Google AI Overview only: organic top-10 rankings × AI citations — coverage, four quadrants, displacer domains |
 
 ### Market intelligence — categories, whitespace & momentum (3)
 
