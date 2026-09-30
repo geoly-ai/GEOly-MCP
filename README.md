@@ -18,14 +18,14 @@ https://app.geoly.ai/api/mcp
 ## What your agent can do
 
 - **Pull the same KPIs you see in the app** — AIGVR score, mention rate, citation rate per AI platform (`get_brand_overview`), daily trends, and SQL-free controlled aggregation over daily datasets (`query_analytics`).
-- **Find blind spots.** Which buyer queries never mention your brand (`get_prompt_mention_rates`)? Which prompts does a domain fail to get cited on (`get_content_opportunities`)?
-- **Compare brands head-to-head** — 2–4 brands side by side on visibility, footprint, citations, and category ranking across AI engines (`compare_public_brands`).
+- **Find blind spots.** Which buyer queries never mention your brand (`get_prompt_list` with `view="mention_rates"`)? Which domains does AI cite when it names a competitor but not you (`get_citation_overview` with `section="table"`, `gap_only=true`)?
+- **Compare brands head-to-head** — 2–4 brands side by side on visibility, footprint, citations, and category ranking across AI engines (`get_public_brand` with `brand_ids`).
 - **Map category whitespace** — every topic in a category classified into strengths (covered / leading / close / defend) and opportunities (prioritize / gap / watch) for your brand (`get_category_whitespace`).
 - **Track momentum.** Who is gaining or losing Share of Mention in AI answers, period over period (`get_category_brand_momentum`)?
 - **See AI-search demand** — what people actually ask AI in your product space, which brands win those answers, and which demand territories each brand owns (`get_public_search_queries`).
-- **Watch the AI shelf.** Which products AI recommends most across every category, who is climbing week over week (`list_public_shopping_boards`), and any single product's full AI profile (`get_public_shopping_product_detail`).
-- **Score competition difficulty** — a 0–100 "keyword difficulty for the AI era" per topic (`get_topic_competition_difficulty`).
-- **Profile AI perception.** How do AI models describe a brand? Canonical aspects, polarity, and verbatim evidence (`get_public_brand_perception`).
+- **Watch the AI shelf.** Which products AI recommends most across every category, who is climbing week over week (`list_public_shopping_products` with `view="boards"`), and any single product's full AI profile (`get_public_shopping_product_detail`).
+- **Score competition difficulty** — a 0–100 "keyword difficulty for the AI era" per topic (`get_public_topic` with `view="difficulty"`).
+- **Profile AI perception.** How do AI models describe a brand? Canonical aspects, polarity, and verbatim evidence (`get_public_brand` with `view="perception"`).
 - **Audit AI readiness** — GEO site audits covering accessibility, structured data, content structure, and technical checks (`get_audit_detail`).
 
 ## Try asking
@@ -185,102 +185,84 @@ Agencies and multi-workspace users: a single connection can span every workspace
 ## Security & data access
 
 - The server only reads data from workspaces you explicitly share at the OAuth consent screen — nothing beyond that scope.
-- Write access is opt-in per resource on the consent screen and covers exactly 4 tools (create prompt / topic / competitor, trigger monitoring). Multi-workspace connections and static tokens are always read-only, no exceptions.
+- Write access is opt-in per resource on the consent screen and covers exactly 7 tools (create prompt / topic / competitor, archive or restore a prompt, edit prompt tags, move prompts into a topic, trigger monitoring). Multi-workspace connections and static tokens are always read-only, no exceptions.
 - Revoke a connection any time from your GEOly workspace settings; the client's cached credentials stop working immediately.
 - The endpoint is stateless streamable HTTP over TLS. Nothing is installed or executed on your machine.
 
 ## Tools
 
-60+ tools. The surface adapts to your access — single-brand connections skip the routing tools, read-only connections skip the write tools.
+Up to 54 tools. The surface adapts to your access — single-brand connections skip the routing selectors, read-only connections skip the write tools, and the market-intelligence tools need the Grow plan (a read-only multi-workspace connection on Grow or above sees 47). Related reads share one tool: pick the view with its `view` / `mode` / `section` / `source` / `window_caliber` parameter. A parameter that belongs to a different view is rejected before the call runs.
 
-### Brand monitoring — overview & KPIs (4)
+### Brand monitoring — overview & KPIs (3)
 
 | Tool | What it returns |
 | --- | --- |
 | `get_brand_overview` | Headline KPIs: AIGVR score, mention/citation rates, per-platform stats — matches the in-app numbers |
-| `get_brand_citations_daily` | Daily trend of AIGVR / mention rate / citation rate |
-| `query_analytics` | Controlled aggregation (no SQL) over daily datasets — dimensions, metrics, filters, prompt-text subsets |
+| `query_analytics` | Controlled aggregation (no SQL) over daily datasets — dimensions, metrics, filters, prompt-text subsets. Also the daily trend: `dataset="brand_citations_daily"` gives AIGVR / mention rate / citation rate per day per platform |
 | `resolve_my_brand_public` | Bridge from your monitored brand to its public market-intelligence profile |
 
 ### Brand monitoring — prompts & answers (8)
 
 | Tool | What it returns |
 | --- | --- |
-| `get_prompt_list` | Search/list monitored prompts with visibility stats |
+| `get_topic_list` | The brand's monitored topics with active / archived prompt counts — where topic ids come from |
+| `get_prompt_list` | `view="table"` (default): search/list monitored prompts with visibility stats. `view="mention_rates"`: per-prompt mention rate, worst first — blind-spot discovery |
 | `get_prompt_detail` | One prompt in full: per-platform performance, AIGVR, Share of Model, competitor mentions |
-| `get_prompt_record_summaries` | Latest monitoring record per platform for one prompt |
-| `list_prompt_records` | Full execution history of one prompt over a time range, paginated — per-day trend work |
+| `list_prompt_records` | Full execution history of one prompt over a time range, paginated — per-day trend work. `latest_per_platform=true`: just the latest record per platform |
+| `list_brand_answers` | `view="table"` (default): every AI answer for the brand across all prompts, newest first, filterable by platform / topic / tag / country / brand. `view="mention_samples"`: recent answers mentioning the brand — raw text + sentiment + context |
 | `get_prompt_record_detail` | One monitored AI answer in full: text, citations, sentiment |
 | `get_prompt_citations` | Citations for a prompt — raw or deduplicated URL list with share % |
-| `get_prompt_mention_rates` | Per-prompt mention rate, ascending — blind-spot discovery |
-| `get_brand_search_queries` | Query-fanout demand roots: the real web searches the AI ran while answering your prompts (ChatGPT, 90 days) |
+| `get_brand_search_queries` | Query fanout: the real web searches ChatGPT / Perplexity ran while answering your prompts, by `mode` (`overview`, `groups`, `query_detail`, `prompt_queries`) |
 
-### Brand monitoring — citations, domains & pages (5)
+### Brand monitoring — citations, domains & pages (3)
 
 | Tool | What it returns |
 | --- | --- |
-| `get_citation_overview` | Citation domain distribution + ownership breakdown across the brand |
+| `get_citation_overview` | Citation domain distribution + ownership breakdown across the brand. `section="board"` (default): totals, your share and rank, movers, trend, type share. `section="table"`: one page of cited root domains with share and change vs the previous window; `gap_only=true` keeps domains where a competitor is mentioned and you are not |
 | `get_domain_detail` | One domain's citation profile: trend, pages, prompts, platforms, regions |
-| `get_page_detail` | One page URL's citation detail: trend, prompt distribution, text snippets |
-| `get_url_reference_detail` | A URL's references across citations and search sources |
-| `get_content_opportunities` | Content-gap analysis: prompts where a domain has low or no citations |
+| `get_url_detail` | One page URL. `window_caliber="rolling"` (default): its references across citations and ChatGPT search sources over a rolling or custom window. `window_caliber="page"`: its citation detail on the in-app citations window — trend, prompt distribution, text snippets |
 
-### Brand monitoring — competitors, topics & sentiment (9)
+### Brand monitoring — competitors, topics & sentiment (7)
 
 | Tool | What it returns |
 | --- | --- |
-| `get_competitor_list` | Tracked competitors for the brand |
-| `get_competitor_overview` | Cross-prompt competitor comparison |
+| `get_competitor_list` | The brand library: tracked, suggested and removed brands, with 30-day mentions and spellings |
+| `get_brand_board` | The in-app brand board: your brand vs confirmed competitors on visibility and share, optional daily trend |
+| `get_platform_matrix` | Brand + auto-discovered competitors × platform, or topics × platform. `competitor_limit` (up to 20) + `include_totals=true` = the full cross-platform competitor comparison |
 | `get_competitor_cooccurrence` | Brand + competitor co-occurrence, with optional answer text |
-| `get_competitor_polarity` | AI Verdict: per-answer preference polarity vs each competitor (weLose / tie / weWin, net loss) |
-| `get_platform_matrix` | Brand + competitors × platform matrix, or topics × platform |
+| `get_verdict` | AI Verdict, `view` required. `view="competitors"`: who AI prefers over you — per competitor, the answers where it was preferred, with change vs the previous window. `view="sources"`: cited domains in answers that carry verdict votes, with the share where your brand was judged negatively (default 7-day window) |
 | `get_topic_analytics` | Per-topic analysis: sentiment, competitors, response types, trends |
 | `get_sentiment_dashboard` | Sentiment distribution, trends, platform comparison |
-| `get_risk_context_sources` | AI Verdict: cited domains over-represented in negative / mixed answers, with lift (7-day window) |
-| `get_brand_mention_samples` | Recent AI answers mentioning the brand: raw text + sentiment + context |
 
-### Site audits & GA4 (4)
+### Site audits & traffic (3)
 
 | Tool | What it returns |
 | --- | --- |
 | `get_audit_list` | GEO site audits (AI-readiness diagnostics), paginated history |
-| `get_audit_detail` | One audit in full: per-category scores, critical/warning/passed issues |
-| `get_ga4_traffic_data` | GA4 integration: sessions, page views, distribution |
-| `get_ga4_page_data` | GA4 page-level: views, sessions, bounce rate, traffic sources |
+| `get_audit_detail` | One audit. `section="report"` (default): per-category scores, critical/warning/passed issues. `section="pages"`: per-page results |
+| `get_traffic_data` | Site traffic, `source` required. `source="ga4"`: GA4 sessions, page views, AI-referred traffic (add `page_path` for one page's views, bounce rate, traffic sources). `source="cloudflare"`: AI-crawler requests, crawled paths, blocked crawlers |
 
-### Market intelligence — resolve & browse (4)
+### Market intelligence — resolve & browse (3)
 
 | Tool | What it returns |
 | --- | --- |
 | `search_public_entities` | Free-text resolver: brand / category / topic / product name or domain → public IDs (products via `include_products`) |
 | `list_public_topics` | Browse public topics, with status/search filters |
-| `list_public_locales` | Valid {country, language} pairs for an entity |
-| `get_available_platforms` | Which AI platforms have data for a scope, ordered by volume |
+| `get_public_coverage` | Free discovery metadata, `view` required. `view="locales"`: valid {country, language} pairs for an entity. `view="platforms"`: which AI platforms have data for a scope, ordered by volume. `view="data_window"`: the published-batch time anchor and its 30 / 60 / 90-day windows |
 
-### Market intelligence — topics (10)
+### Market intelligence — topics (3)
 
 | Tool | What it returns |
 | --- | --- |
-| `get_public_topic_overview` | Overview of one public topic |
-| `get_public_topic_brand_leaderboard` | Brand leaderboard ranked by Share of Mention |
-| `get_public_topic_som_trend` | Daily Share-of-Mention trend |
-| `get_public_topic_prompt_matrix` | Prompt × brand heatmap (per-prompt SoM %) |
-| `list_public_topic_prompts` | Every prompt under a topic, with leader brand & share |
+| `get_public_topic` | One public topic, by `view`: `overview` (default), `brand_leaderboard` (ranked by Share of Mention), `som_trend`, `prompt_matrix` (prompt × brand heatmap), `prompts` (every prompt, with leader brand & share), `citation_domains`, `commerce` (activation rate, price stats, retail channels), `difficulty` (AI-visibility difficulty 0–100, like SEO keyword difficulty — for a `topic_id`, a `prompt_id`, or a whole category via `product_space_id`) |
 | `get_public_topic_prompt_detail` | One prompt: per-brand breakdown, recent records, top citation domains |
 | `get_public_topic_record_detail` | One public AI answer: snippeted text, citations, brands mentioned |
-| `get_public_topic_citation_domains` | Citation-domain leaderboard for the topic |
-| `get_public_topic_commerce` | Commerce aggregate: activation rate, price stats, retail channels |
-| `get_topic_competition_difficulty` | AI-visibility difficulty 0–100, like SEO keyword difficulty |
 
-### Market intelligence — brands (5)
+### Market intelligence — brands (1)
 
 | Tool | What it returns |
 | --- | --- |
-| `get_public_brand` | One public brand across topics, faceted: visibility, footprint, competitors, citations, ranking |
-| `get_public_brand_rank_citation` | Google AI Overview rankings × AI citations: coverage, four search-counting quadrants, displacers, and paginated per-search detail |
-| `get_public_brand_perception` | AI perception profile: canonical aspects + polarity + evidence |
-| `get_public_brand_perception_aspect_mentions` | Drill-down: source mentions behind one perception aspect |
-| `compare_public_brands` | Side-by-side comparison of 2–4 brands on one facet |
+| `get_public_brand` | One public brand across topics, by `view`: facets `overview` (default), `visibility`, `footprint`, `competitors`, `citations`, `category_ranking`, `revenue`, `shopping`, `citation_totals`. Pass `brand_ids` (2–4) instead of `brand_id` for a side-by-side comparison on one facet (default `visibility`). `view="perception"`: AI perception profile — canonical aspects, polarity, evidence; `view="perception_mentions"` + `aspect`: the source mentions behind one aspect. `view="rank_citation"`: Google AI Overview rankings × AI citations — coverage, four search-counting quadrants, displacers; `view="rank_citation_rows"`: paginated per-search detail |
 
 ### Market intelligence — categories, whitespace & momentum (3)
 
@@ -290,21 +272,18 @@ Agencies and multi-workspace users: a single connection can span every workspace
 | `get_category_whitespace` | Opportunity map: strengths (covered / leading / close / defend) vs opportunities (prioritize / gap / watch) |
 | `get_category_brand_momentum` | Period-over-period Share-of-Mention change: risers vs fallers |
 
-### Market intelligence — AI search queries (2)
+### Market intelligence — AI search queries (1)
 
 | Tool | What it returns |
 | --- | --- |
-| `get_public_search_queries` | AI-search demand for a product space: queries, themes, brand landscape, demand territories |
-| `get_public_search_query_detail` | Drill-down on one query or theme: brands, prompts, top sources |
+| `get_public_search_queries` | AI-search demand for a product space, by `mode`: `territories` (which brand owns each demand territory), `product_spaces`, `query_detail` (one query: brands, prompts, top sources), `theme_detail` (one topic) |
 
-### Market intelligence — shopping (4)
+### Market intelligence — shopping (2)
 
 | Tool | What it returns |
 | --- | --- |
-| `list_public_shopping_boards` | The cross-category AI shelf leaderboard: hot / climbers / entrants with week-over-week rank moves |
-| `get_public_shopping_product_detail` | One product's full AI analysis: shelves, weekly trend, rivals, channels |
-| `list_public_shopping_products` | Shopping overview for a product-space slice: products, channels, price bands |
-| `get_public_shopping_card_detail` | One product card preview: evidence, topics, prompts, retail offers |
+| `list_public_shopping_products` | `view="products"` (default): one category's AI shelf — ranked products, channels, price bands (`product_space_id` required; `page` starts at 1). `view="boards"`: the cross-category AI shelf leaderboard — hot / climbers / entrants with week-over-week rank moves (`page` starts at 0) |
+| `get_public_shopping_product_detail` | One product. `mode="full"` (default): its full AI analysis — shelves, weekly trend, rivals, channels. `mode="card"`: a cheap preview — evidence, topics, prompts, retail offers (`product_space_id` required) |
 
 ### Public source domains (3)
 
@@ -314,32 +293,42 @@ Agencies and multi-workspace users: a single connection can span every workspace
 | `get_public_source_domain_detail` | One citation source domain: coverage, co-occurring brands, optional full AI DA scorecard |
 | `get_public_source_brand_conduit` | The topics where one source domain funnels AI attention toward one brand |
 
-### Write tools (4)
+### Write tools (7)
 
 Require write access granted on the OAuth consent screen. Static tokens and multi-workspace connections stay read-only.
 
 | Tool | What it does |
 | --- | --- |
 | `create_prompt` | Create a new monitoring prompt |
+| `archive_prompt` | Archive a prompt (stops monitoring), or restore it with `restore=true` |
+| `update_prompt_tags` | Add or remove tags on up to 500 prompts, or rename a tag brand-wide |
+| `move_prompts_to_topic` | Move up to 500 prompts into a topic, or ungroup them |
 | `create_topic` | Create a prompt topic |
 | `create_competitor` | Add a competitor to track |
 | `trigger_prompt` | Run monitoring for a prompt now (consumes credits) |
 
-### Reports, discovery & routing (5)
+### Reports (1)
 
 | Tool | What it returns |
 | --- | --- |
-| `get_agent_ready_scans` | Agent Readiness scan history for the signed-in user |
-| `get_agent_ready_scan_detail` | Full Agent Readiness scan result by ID |
+| `get_agent_ready_scans` | Agent Readiness scans for the signed-in user: the scan history, or one full scan result with `scan_id` |
+
+### Discovery & routing (6)
+
+| Tool | What it returns |
+| --- | --- |
+| `get_brand_context` | One-shot orientation, free — call it first: brand, workspace & plan, today's business date, platforms, topics, tracked competitors, data window, remaining credits |
+| `get_current_date` | Server time, for date-range validation |
+| `get_quota` | MCP credits used / remaining this month and the reset date (always available) |
+| `resolve_page_context` | Resolves a GEOly app URL the user is viewing into its entity scope and suggested tools |
 | `list_organizations` | Workspaces the connection can access (multi-workspace mode) |
 | `list_brands` | Brands in the workspace (multi-brand mode) |
-| `get_current_date` | Server time, for date-range validation |
 
 ## Plans & access
 
 | Tool group | Availability |
 | --- | --- |
-| Brand monitoring, audits, GA4, reports | Any active GEOly workspace |
+| Brand monitoring, audits, site traffic (GA4 / Cloudflare), reports | Any active GEOly workspace |
 | Market intelligence (topics, brands, categories, search queries, shopping) | Grow plan and above |
 | Public source domains | All connections |
 | Write tools | Write access granted at OAuth consent, single-workspace |
@@ -350,7 +339,7 @@ Heavy market-intelligence queries may count toward plan quotas, and `trigger_pro
 
 - **The first call returns 401** — that's the OAuth handshake by design; your client should open a browser. If it doesn't, the client lacks remote-OAuth support: bridge with `mcp-remote` (see above).
 - **402 Payment Required** — the workspace subscription is inactive.
-- **Market-intelligence tools are missing** — the topic / brand / category / search-query / shopping tool groups require the Grow plan or above. (The two public source domain tools are separate and available on all connections.)
+- **Market-intelligence tools are missing** — the topic / brand / category / search-query / shopping tool groups require the Grow plan or above. (The three public source domain tools are separate and available on all connections.)
 - **Write tools are missing** — write access wasn't granted at consent, you're on a static token, or the connection spans multiple workspaces (writes are single-workspace only). Re-authenticate and tick the write permissions you need.
 - **Opening the URL in a browser shows 405** — expected; the endpoint is POST-only streamable HTTP, not a web page.
 

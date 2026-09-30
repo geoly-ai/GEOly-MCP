@@ -113,7 +113,7 @@ claude mcp add --transport http geoly https://app.geoly.ai/api/mcp \
 
 - Restart or reload the client so it picks up the new server.
 - Trigger any GEOly tool call (see step 3). The server answers the first unauthenticated call with an HTTP 401 OAuth challenge — the client will open a browser window.
-- Tell the user to sign in, choose which workspaces to share, and review the permission grid: read access is preselected; write access (4 tools) stays off unless they tick it.
+- Tell the user to sign in, choose which workspaces to share, and review the permission grid: read access is preselected; write access (7 tools) stays off unless they tick it.
 - If no browser opens, the client does not support remote OAuth — switch to the `mcp-remote` bridge configuration shown above, or use a static token.
 
 ### 3. Verify installation
@@ -138,13 +138,13 @@ curl -s -o /dev/null -w "%{http_code}" -X POST https://app.geoly.ai/api/mcp \
 
 ## Available tools (summary)
 
-60+ read-mostly tools across: brand KPIs and daily trends, prompt-level visibility and AI answers, citation domains/pages, competitors and sentiment, GEO site audits, GA4, market intelligence (topic leaderboards, brand comparison, category whitespace, brand momentum, AI-search demand with territory maps, the cross-category AI shelf leaderboard, product deep-dives), public source domains (AI DA scorecards, source-to-brand conduits), and 4 write tools (create prompt/topic/competitor, trigger monitoring). The tool surface adapts to plan and granted permissions — see the [README](./README.md#tools) for the full catalog.
+Up to 54 read-mostly tools across: brand KPIs and daily trends, prompt-level visibility and AI answers, citation domains/pages, competitors and sentiment, GEO site audits, site traffic (GA4 / Cloudflare), market intelligence (topic leaderboards, brand comparison, category whitespace, brand momentum, AI-search demand with territory maps, the cross-category AI shelf leaderboard, product deep-dives), public source domains (AI DA scorecards, source-to-brand conduits), and 7 write tools (create prompt/topic/competitor, archive a prompt, edit prompt tags, move prompts into a topic, trigger monitoring). The tool surface adapts to plan and granted permissions (a read-only multi-workspace connection on Grow or above sees 47); related reads share one tool and are picked with a `view` / `mode` / `section` / `source` parameter — see the [README](./README.md#tools) for the full catalog.
 
 ## Troubleshooting
 
 - **401 loop, browser never opens** — client lacks remote-OAuth support. Use the `mcp-remote` bridge or a `geom_` token.
 - **402 Payment Required** — the workspace subscription is inactive; the user needs to check billing at app.geoly.ai.
-- **Market-intelligence tool groups missing from the tool list** (topics, public brands, categories, search queries, shopping) — the workspace plan is below Grow. This is expected, not an installation failure. The two public source domain tools (`get_public_sources_overview`, `get_public_source_domain_detail`) are not plan-gated and should still be present.
+- **Market-intelligence tool groups missing from the tool list** (topics, public brands, categories, search queries, shopping) — the workspace plan is below Grow. This is expected, not an installation failure. The three public source domain tools (`get_public_sources_overview`, `get_public_source_domain_detail`, `get_public_source_brand_conduit`) are not plan-gated and should still be present.
 - **Write tools missing** — write access wasn't ticked at consent, the connection uses a static token, or it spans multiple workspaces. Re-authenticate on a single workspace and grant the write permissions needed.
 - **Stale or broken auth after a long idle period** — clear the client's cached credentials for `geoly` (e.g. `claude mcp remove geoly` then re-add, or the client's re-authenticate action) and redo step 2.
 - **GET request to the URL returns 405** — expected; the endpoint only accepts MCP POST traffic.
