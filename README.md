@@ -324,6 +324,12 @@ Require write access granted on the OAuth consent screen. Static tokens and mult
 | `list_organizations` | Workspaces the connection can access (multi-workspace mode) |
 | `list_brands` | Brands in the workspace (multi-brand mode) |
 
+## Versioning
+
+- **`https://app.geoly.ai/api/mcp` is GEOly MCP v1** — the tool surface listed above. Every response carries the header `GEOly-MCP-Version: 1`, and the server announces the version at initialize (`serverInfo.version` `1.0.0`, plus a first paragraph in the server instructions).
+- **Policy — the same as the GEOly Agent API (`GEOly-API-Version: 1`):** an old version keeps running, unmaintained, and is not shut down. A breaking change would ship as v2 on a new path, and `/api/mcp` would keep serving v1 unchanged. New tools, new views and new optional parameters ship on v1 without a version bump. There is no v2 today.
+- **Tool names from before the 0.7.0 consolidation** (34 names, e.g. `compare_public_brands`, `get_competitor_overview`, `list_citation_domains`) are no longer listed, but stay callable on v1 as hidden compatibility names — unmaintained, with no expiry date. Existing scripts keep working; use the tool names listed above for anything new.
+
 ## Plans & access
 
 | Tool group | Availability |

@@ -209,6 +209,12 @@ geoly call get_brand_overview --time_range 30d
 | 报告 | 1 | Agent Readiness 扫描历史与详情（`get_agent_ready_scans`，带 `scan_id` 取详情） |
 | 发现与路由 | 6 | 一次性定位（`get_brand_context`）、额度查询（`get_quota`）、工作区列表（`list_organizations`） |
 
+## 版本
+
+- **`https://app.geoly.ai/api/mcp` 就是 GEOly MCP v1**——即上面列出的工具面。每个响应都带 `GEOly-MCP-Version: 1` 头，initialize 时服务端也会声明版本（`serverInfo.version` 为 `1.0.0`，server instructions 首段写明版本与政策）。
+- **版本政策与 GEOly Agent API（`GEOly-API-Version: 1`）同一条**：旧版本留着跑、不维护、不下线。真有破坏性改动才会在新路径上开 v2，`/api/mcp` 原样保留 v1；新增工具、视图、可选参数都在 v1 上做，不升版本。目前没有 v2。
+- **0.7.0 精简之前的旧工具名**（34 个，例如 `compare_public_brands`、`get_competitor_overview`、`list_citation_domains`）不再出现在工具列表里，但在 v1 上作为隐藏兼容名继续可调——不维护、不设到期。已有脚本不受影响；新工作请一律用上面列出的工具名。
+
 ## 套餐与访问
 
 | 工具组 | 可用范围 |
