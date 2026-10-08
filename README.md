@@ -191,7 +191,7 @@ Agencies and multi-workspace users: a single connection can span every workspace
 
 ## Tools
 
-Up to 54 tools. The surface adapts to your access — single-brand connections skip the routing selectors, read-only connections skip the write tools, and the market-intelligence tools need the Grow plan (a read-only multi-workspace connection on Grow or above sees 47). Related reads share one tool: pick the view with its `view` / `mode` / `section` / `source` / `window_caliber` parameter. A parameter that belongs to a different view is rejected before the call runs.
+Up to 53 tools. The surface adapts to your access — single-brand connections skip the routing selectors, read-only connections skip the write tools, and the market-intelligence tools need the Grow plan (a read-only multi-workspace connection on Grow or above sees 47). Related reads share one tool: pick the view with its `view` / `mode` / `section` / `source` / `window_caliber` parameter. A parameter that belongs to a different view is rejected before the call runs.
 
 ### Brand monitoring — overview & KPIs (3)
 

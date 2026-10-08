@@ -189,7 +189,7 @@ geoly call get_brand_overview --time_range 30d
 
 ## 工具
 
-最多 54 个工具。工具集合会随访问权限自适应——单品牌连接不出现路由选择类工具，只读连接不出现写入类工具，市场情报工具需要 Grow 套餐（Grow 及以上的只读多工作区连接可见 47 个）。相关读取合并在同一个工具里，用 `view` / `mode` / `section` / `source` / `window_caliber` 参数选视图；传了属于其他视图的参数，调用执行前就会被拒绝。完整清单见 [英文版 README](https://github.com/geoly-ai/GEOly-MCP/blob/main/README.md#tools)，这里列分组概览：
+最多 53 个工具。工具集合会随访问权限自适应——单品牌连接不出现路由选择类工具，只读连接不出现写入类工具，市场情报工具需要 Grow 套餐（Grow 及以上的只读多工作区连接可见 47 个）。相关读取合并在同一个工具里，用 `view` / `mode` / `section` / `source` / `window_caliber` 参数选视图；传了属于其他视图的参数，调用执行前就会被拒绝。完整清单见 [英文版 README](https://github.com/geoly-ai/GEOly-MCP/blob/main/README.md#tools)，这里列分组概览：
 
 | 分组 | 数量 | 内容（代表工具） |
 | --- | --- | --- |
