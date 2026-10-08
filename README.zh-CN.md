@@ -12,8 +12,10 @@
 云端托管、streamable HTTP、浏览器内 OAuth。一个 URL，本地零部署：
 
 ```
-https://app.geoly.ai/api/mcp
+https://app.geoly.ai/api/mcp/v1
 ```
+
+`/api/mcp/v1` 是 GEOly MCP v1 的带版本正式地址；不带版本的 `https://app.geoly.ai/api/mcp` 完全等同、继续保留，已有配置无需改动。
 
 ## 你的 agent 能做什么
 
@@ -47,7 +49,7 @@ https://app.geoly.ai/api/mcp
 ### Claude Code
 
 ```bash
-claude mcp add --transport http geoly https://app.geoly.ai/api/mcp
+claude mcp add --transport http geoly https://app.geoly.ai/api/mcp/v1
 ```
 
 ### Cursor
@@ -60,7 +62,7 @@ claude mcp add --transport http geoly https://app.geoly.ai/api/mcp
 {
   "mcpServers": {
     "geoly": {
-      "url": "https://app.geoly.ai/api/mcp"
+      "url": "https://app.geoly.ai/api/mcp/v1"
     }
   }
 }
@@ -68,11 +70,11 @@ claude mcp add --transport http geoly https://app.geoly.ai/api/mcp
 
 ### Claude Desktop
 
-设置 → Connectors → **Add custom connector**，URL 填 `https://app.geoly.ai/api/mcp`，随后按浏览器里的 OAuth 授权流程走完即可。
+设置 → Connectors → **Add custom connector**，URL 填 `https://app.geoly.ai/api/mcp/v1`，随后按浏览器里的 OAuth 授权流程走完即可。
 
 ### ChatGPT
 
-在 ChatGPT 设置里开启 connectors 的开发者模式，添加自定义 connector，URL 填 `https://app.geoly.ai/api/mcp`，完成 OAuth 登录。没错——你可以在 ChatGPT 里问自己品牌在 ChatGPT 里的可见度。
+在 ChatGPT 设置里开启 connectors 的开发者模式，添加自定义 connector，URL 填 `https://app.geoly.ai/api/mcp/v1`，完成 OAuth 登录。没错——你可以在 ChatGPT 里问自己品牌在 ChatGPT 里的可见度。
 
 ### VS Code（GitHub Copilot）
 
@@ -81,7 +83,7 @@ claude mcp add --transport http geoly https://app.geoly.ai/api/mcp
 或命令行一键添加：
 
 ```bash
-code --add-mcp '{"name":"geoly","type":"http","url":"https://app.geoly.ai/api/mcp"}'
+code --add-mcp '{"name":"geoly","type":"http","url":"https://app.geoly.ai/api/mcp/v1"}'
 ```
 
 ### Codex CLI
@@ -101,7 +103,7 @@ codex plugin add geoly-mcp@geoly
 {
   "mcpServers": {
     "geoly": {
-      "serverUrl": "https://app.geoly.ai/api/mcp"
+      "serverUrl": "https://app.geoly.ai/api/mcp/v1"
     }
   }
 }
@@ -110,7 +112,7 @@ codex plugin add geoly-mcp@geoly
 ### Gemini CLI
 
 ```bash
-gemini mcp add --transport http geoly https://app.geoly.ai/api/mcp
+gemini mcp add --transport http geoly https://app.geoly.ai/api/mcp/v1
 ```
 
 或写入 `~/.gemini/settings.json`：
@@ -119,7 +121,7 @@ gemini mcp add --transport http geoly https://app.geoly.ai/api/mcp
 {
   "mcpServers": {
     "geoly": {
-      "httpUrl": "https://app.geoly.ai/api/mcp"
+      "httpUrl": "https://app.geoly.ai/api/mcp/v1"
     }
   }
 }
@@ -134,7 +136,7 @@ Cline 已原生支持远程 server（注意 `streamableHttp` 是驼峰写法）�
   "mcpServers": {
     "geoly": {
       "type": "streamableHttp",
-      "url": "https://app.geoly.ai/api/mcp"
+      "url": "https://app.geoly.ai/api/mcp/v1"
     }
   }
 }
@@ -151,7 +153,7 @@ Cline 已原生支持远程 server（注意 `streamableHttp` 是驼峰写法）�
   "mcpServers": {
     "geoly": {
       "command": "npx",
-      "args": ["-y", "mcp-remote", "https://app.geoly.ai/api/mcp"]
+      "args": ["-y", "mcp-remote", "https://app.geoly.ai/api/mcp/v1"]
     }
   }
 }
@@ -178,7 +180,7 @@ geoly call get_brand_overview --time_range 30d
 | **OAuth（默认）** | 只配 URL、不配任何凭据。首次调用返回标准挑战（RFC 9728 protected-resource metadata），客户端自动跳浏览器授权页：登录、选择要共享的工作区、核对权限矩阵。 | 按资源逐项授予读/写——读默认勾选，写默认关闭、需要手动勾选 |
 | **静态 token（CI / 无头环境）** | 在 GEOly 工作区设置中生成 `geom_...` token，以 `Authorization: Bearer geom_...` 携带。 | 恒为只读 |
 
-代理商与多工作区用户：一条连接可以覆盖你所属的全部工作区，也可以用 `https://app.geoly.ai/api/mcp?org_id=<id>` 锁定单个工作区（id 可通过 `list_organizations` 工具获取）。
+代理商与多工作区用户：一条连接可以覆盖你所属的全部工作区，也可以用 `https://app.geoly.ai/api/mcp/v1?org_id=<id>` 锁定单个工作区（id 可通过 `list_organizations` 工具获取）。
 
 ## 安全与数据边界
 
@@ -211,8 +213,8 @@ geoly call get_brand_overview --time_range 30d
 
 ## 版本
 
-- **`https://app.geoly.ai/api/mcp` 就是 GEOly MCP v1**——即上面列出的工具面。每个响应都带 `GEOly-MCP-Version: 1` 头，initialize 时服务端也会声明版本（`serverInfo.version` 为 `1.0.0`，server instructions 首段写明版本与政策）。
-- **版本政策与 GEOly Agent API（`GEOly-API-Version: 1`）同一条**：旧版本留着跑、不维护、不下线。真有破坏性改动才会在新路径上开 v2，`/api/mcp` 原样保留 v1；新增工具、视图、可选参数都在 v1 上做，不升版本。目前没有 v2。
+- **`https://app.geoly.ai/api/mcp/v1` 就是 GEOly MCP v1**——即上面列出的工具面。不带版本的 `https://app.geoly.ai/api/mcp` 是同一处理器、行为完全一致，保留给现有配置。每个响应都带 `GEOly-MCP-Version: 1` 头，initialize 时服务端也会声明版本（`serverInfo.version` 为 `1.0.0`，server instructions 首段写明版本与政策）。
+- **版本政策与 GEOly Agent API（`GEOly-API-Version: 1`）同一条**：旧版本留着跑、不维护、不下线。真有破坏性改动才会在新路径 `/api/mcp/v2` 上开 v2，`/api/mcp/v1`（以及 `/api/mcp`）原样保留 v1；新增工具、视图、可选参数都在 v1 上做，不升版本。目前没有 v2。
 - **0.7.0 精简之前的旧工具名**（34 个，例如 `compare_public_brands`、`list_citation_domains`）不再出现在工具列表里，在 v1 上**可调用到 2026-11-30，之后移除**（调用返回 `Tool … not found`）。用旧名调用成功时，返回顶层带可机读的 `_deprecated` 块：`sunset` 是移除日期，`use` 是应改用的写法。旧名 → 新写法见 [geoly.ai/open/mcp](https://geoly.ai/zh/open/mcp#migration) 与技能的 [`tools-catalog`](https://github.com/geoly-ai/agent-skills/blob/main/skills/geoly-mcp/references/tools-catalog.md)。
 - **已移除**：`get_competitor_overview`、`get_brand_citations_daily`、`get_content_opportunities` 无法一对一替换，到 2026-11-30 前只返回免费的 `TOOL_REMOVED` 错误并给出替代写法（`get_platform_matrix` `dimension="competitor"`、`query_analytics` `dataset="brand_citations_daily"`、`get_citation_overview` `section="table"` + `gap_only=true`）。
 - **弃用 mode 已删除**：`get_brand_search_queries` 的 `roots` / `root_detail` / `topic_roots` 与 `get_public_search_queries` 的 `queries` / `themes` / `brand_landscape` / `prompt_map` 不再存在，两个工具的 `mode` 现在必填。

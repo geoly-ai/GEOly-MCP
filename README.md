@@ -12,8 +12,10 @@ The official remote MCP server for **[GEOly](https://www.geoly.ai)** — AI bran
 Hosted, streamable HTTP, OAuth in the browser. One URL, nothing to run locally:
 
 ```
-https://app.geoly.ai/api/mcp
+https://app.geoly.ai/api/mcp/v1
 ```
+
+`/api/mcp/v1` is the versioned address of GEOly MCP v1. The unversioned `https://app.geoly.ai/api/mcp` serves exactly the same thing and stays available — existing configs need no change.
 
 ## What your agent can do
 
@@ -49,7 +51,7 @@ Then: add the URL, make one tool call, sign in when the browser opens. That's th
 ### Claude Code
 
 ```bash
-claude mcp add --transport http geoly https://app.geoly.ai/api/mcp
+claude mcp add --transport http geoly https://app.geoly.ai/api/mcp/v1
 ```
 
 ### Cursor
@@ -62,7 +64,7 @@ Or add to `~/.cursor/mcp.json`:
 {
   "mcpServers": {
     "geoly": {
-      "url": "https://app.geoly.ai/api/mcp"
+      "url": "https://app.geoly.ai/api/mcp/v1"
     }
   }
 }
@@ -70,11 +72,11 @@ Or add to `~/.cursor/mcp.json`:
 
 ### Claude Desktop
 
-Settings → Connectors → **Add custom connector**, then paste `https://app.geoly.ai/api/mcp` as the URL. Claude walks you through the OAuth consent in the browser.
+Settings → Connectors → **Add custom connector**, then paste `https://app.geoly.ai/api/mcp/v1` as the URL. Claude walks you through the OAuth consent in the browser.
 
 ### ChatGPT
 
-In ChatGPT settings, enable developer mode for connectors, then add a custom connector with the URL `https://app.geoly.ai/api/mcp` and complete the OAuth sign-in. Yes — you can ask ChatGPT about your brand's visibility inside ChatGPT.
+In ChatGPT settings, enable developer mode for connectors, then add a custom connector with the URL `https://app.geoly.ai/api/mcp/v1` and complete the OAuth sign-in. Yes — you can ask ChatGPT about your brand's visibility inside ChatGPT.
 
 ### VS Code (GitHub Copilot)
 
@@ -83,7 +85,7 @@ In ChatGPT settings, enable developer mode for connectors, then add a custom con
 Or from the command line:
 
 ```bash
-code --add-mcp '{"name":"geoly","type":"http","url":"https://app.geoly.ai/api/mcp"}'
+code --add-mcp '{"name":"geoly","type":"http","url":"https://app.geoly.ai/api/mcp/v1"}'
 ```
 
 ### Codex CLI
@@ -103,7 +105,7 @@ Settings → MCP Configuration:
 {
   "mcpServers": {
     "geoly": {
-      "serverUrl": "https://app.geoly.ai/api/mcp"
+      "serverUrl": "https://app.geoly.ai/api/mcp/v1"
     }
   }
 }
@@ -112,7 +114,7 @@ Settings → MCP Configuration:
 ### Gemini CLI
 
 ```bash
-gemini mcp add --transport http geoly https://app.geoly.ai/api/mcp
+gemini mcp add --transport http geoly https://app.geoly.ai/api/mcp/v1
 ```
 
 Or in `~/.gemini/settings.json`:
@@ -121,7 +123,7 @@ Or in `~/.gemini/settings.json`:
 {
   "mcpServers": {
     "geoly": {
-      "httpUrl": "https://app.geoly.ai/api/mcp"
+      "httpUrl": "https://app.geoly.ai/api/mcp/v1"
     }
   }
 }
@@ -136,7 +138,7 @@ Cline supports remote servers natively (note the camel-cased `streamableHttp`):
   "mcpServers": {
     "geoly": {
       "type": "streamableHttp",
-      "url": "https://app.geoly.ai/api/mcp"
+      "url": "https://app.geoly.ai/api/mcp/v1"
     }
   }
 }
@@ -153,7 +155,7 @@ Clients without native remote/OAuth support can bridge through [`mcp-remote`](ht
   "mcpServers": {
     "geoly": {
       "command": "npx",
-      "args": ["-y", "mcp-remote", "https://app.geoly.ai/api/mcp"]
+      "args": ["-y", "mcp-remote", "https://app.geoly.ai/api/mcp/v1"]
     }
   }
 }
@@ -180,7 +182,7 @@ geoly call get_brand_overview --time_range 30d
 | **OAuth (default)** | Configure the URL with no credentials. The first call returns a standards-compliant challenge (RFC 9728 protected-resource metadata) that sends your client to a browser consent screen: sign in, choose which workspaces to share, and review the permission grid. | Per-resource read/write grants — read is preselected, write stays off unless you tick it |
 | **Static token (CI / headless)** | Generate a `geom_...` token in your GEOly workspace settings and send it as `Authorization: Bearer geom_...`. | Always read-only |
 
-Agencies and multi-workspace users: a single connection can span every workspace you belong to, or pin one with `https://app.geoly.ai/api/mcp?org_id=<id>` (get IDs from the `list_organizations` tool).
+Agencies and multi-workspace users: a single connection can span every workspace you belong to, or pin one with `https://app.geoly.ai/api/mcp/v1?org_id=<id>` (get IDs from the `list_organizations` tool).
 
 ## Security & data access
 
@@ -326,8 +328,8 @@ Require write access granted on the OAuth consent screen. Static tokens and mult
 
 ## Versioning
 
-- **`https://app.geoly.ai/api/mcp` is GEOly MCP v1** — the tool surface listed above. Every response carries the header `GEOly-MCP-Version: 1`, and the server announces the version at initialize (`serverInfo.version` `1.0.0`, plus a first paragraph in the server instructions).
-- **Policy — the same as the GEOly Agent API (`GEOly-API-Version: 1`):** an old version keeps running, unmaintained, and is not shut down. A breaking change would ship as v2 on a new path, and `/api/mcp` would keep serving v1 unchanged. New tools, new views and new optional parameters ship on v1 without a version bump. There is no v2 today.
+- **`https://app.geoly.ai/api/mcp/v1` is GEOly MCP v1** — the tool surface listed above. The unversioned `https://app.geoly.ai/api/mcp` is the same handler with the same behavior, kept for existing configs. Every response carries the header `GEOly-MCP-Version: 1`, and the server announces the version at initialize (`serverInfo.version` `1.0.0`, plus a first paragraph in the server instructions).
+- **Policy — the same as the GEOly Agent API (`GEOly-API-Version: 1`):** an old version keeps running, unmaintained, and is not shut down. A breaking change would ship as v2 on a new path (`/api/mcp/v2`), and `/api/mcp/v1` (and `/api/mcp`) would keep serving v1 unchanged. New tools, new views and new optional parameters ship on v1 without a version bump. There is no v2 today.
 - **Tool names from before the 0.7.0 consolidation** (34 names, e.g. `compare_public_brands`, `list_citation_domains`) are no longer listed. They keep answering on v1 **until 2026-11-30 and are then removed** (calls return `Tool … not found`). A successful call under an old name carries a machine-readable top-level `_deprecated` block: `sunset` is the removal date, `use` is the call to switch to. Old → new mappings: [geoly.ai/open/mcp](https://geoly.ai/open/mcp#migration) and the skill's [`tools-catalog`](https://github.com/geoly-ai/agent-skills/blob/main/skills/geoly-mcp/references/tools-catalog.md).
 - **Already removed:** `get_competitor_overview`, `get_brand_citations_daily` and `get_content_opportunities` were not drop-in replaceable. Until 2026-11-30 they only return a free `TOOL_REMOVED` error naming the replacement (`get_platform_matrix` `dimension="competitor"`, `query_analytics` `dataset="brand_citations_daily"`, `get_citation_overview` `section="table"` + `gap_only=true`).
 - **Retired modes deleted:** `get_brand_search_queries` mode `roots` / `root_detail` / `topic_roots` and `get_public_search_queries` mode `queries` / `themes` / `brand_landscape` / `prompt_map` no longer exist, and `mode` is now required on both tools.

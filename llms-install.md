@@ -7,8 +7,10 @@ GEOly is a **hosted remote MCP server**. There is no package to download, no pro
 Server URL (streamable HTTP):
 
 ```
-https://app.geoly.ai/api/mcp
+https://app.geoly.ai/api/mcp/v1
 ```
+
+This is the versioned address of GEOly MCP v1. The unversioned `https://app.geoly.ai/api/mcp` is equivalent and stays served; if the client is already configured with it, leave it as is.
 
 ## Prerequisites
 
@@ -24,7 +26,7 @@ Pick the block that matches the client, using the exact file paths given.
 **Claude Code** — run:
 
 ```bash
-claude mcp add --transport http geoly https://app.geoly.ai/api/mcp
+claude mcp add --transport http geoly https://app.geoly.ai/api/mcp/v1
 ```
 
 **Cursor** — merge into `~/.cursor/mcp.json` (create the file if missing):
@@ -33,7 +35,7 @@ claude mcp add --transport http geoly https://app.geoly.ai/api/mcp
 {
   "mcpServers": {
     "geoly": {
-      "url": "https://app.geoly.ai/api/mcp"
+      "url": "https://app.geoly.ai/api/mcp/v1"
     }
   }
 }
@@ -46,7 +48,7 @@ claude mcp add --transport http geoly https://app.geoly.ai/api/mcp
   "mcpServers": {
     "geoly": {
       "type": "streamableHttp",
-      "url": "https://app.geoly.ai/api/mcp"
+      "url": "https://app.geoly.ai/api/mcp/v1"
     }
   }
 }
@@ -61,14 +63,14 @@ Settings file locations:
 
 If the OAuth browser flow does not trigger after adding the native config, fall back to the `mcp-remote` bridge (same JSON shape as the Claude Desktop file-based block below).
 
-**Claude Desktop** — prefer the UI: Settings → Connectors → Add custom connector → URL `https://app.geoly.ai/api/mcp`. If only file access is available, merge this `mcp-remote` bridge block into `claude_desktop_config.json`:
+**Claude Desktop** — prefer the UI: Settings → Connectors → Add custom connector → URL `https://app.geoly.ai/api/mcp/v1`. If only file access is available, merge this `mcp-remote` bridge block into `claude_desktop_config.json`:
 
 ```json
 {
   "mcpServers": {
     "geoly": {
       "command": "npx",
-      "args": ["-y", "mcp-remote", "https://app.geoly.ai/api/mcp"]
+      "args": ["-y", "mcp-remote", "https://app.geoly.ai/api/mcp/v1"]
     }
   }
 }
@@ -80,7 +82,7 @@ If the OAuth browser flow does not trigger after adding the native config, fall 
 **VS Code (Copilot)** — run:
 
 ```bash
-code --add-mcp '{"name":"geoly","type":"http","url":"https://app.geoly.ai/api/mcp"}'
+code --add-mcp '{"name":"geoly","type":"http","url":"https://app.geoly.ai/api/mcp/v1"}'
 ```
 
 **Windsurf** — merge into `~/.codeium/windsurf/mcp_config.json` (note the `serverUrl` key):
@@ -89,7 +91,7 @@ code --add-mcp '{"name":"geoly","type":"http","url":"https://app.geoly.ai/api/mc
 {
   "mcpServers": {
     "geoly": {
-      "serverUrl": "https://app.geoly.ai/api/mcp"
+      "serverUrl": "https://app.geoly.ai/api/mcp/v1"
     }
   }
 }
@@ -105,7 +107,7 @@ codex plugin add geoly-mcp@geoly
 **Headless / CI (any client)** — add an authorization header with a static token instead of OAuth. Example (Claude Code):
 
 ```bash
-claude mcp add --transport http geoly https://app.geoly.ai/api/mcp \
+claude mcp add --transport http geoly https://app.geoly.ai/api/mcp/v1 \
   --header "Authorization: Bearer geom_YOUR_TOKEN"
 ```
 
@@ -124,12 +126,12 @@ Run these calls in order:
 2. `get_brand_overview` with `time_range` = `30d` — a data smoke test, not an installation gate:
    - KPIs returned (AIGVR / mention rate / citation rate) → everything works end to end.
    - Empty data or a "no brand" style error → installation is still **correct**; the workspace simply has no monitored brand with data yet. Tell the user to finish brand onboarding at app.geoly.ai.
-   - A brand/workspace routing error on a multi-workspace connection → call `list_brands` (and `list_organizations` if present) first, or pin one workspace by using `https://app.geoly.ai/api/mcp?org_id=<id>` as the server URL.
+   - A brand/workspace routing error on a multi-workspace connection → call `list_brands` (and `list_organizations` if present) first, or pin one workspace by using `https://app.geoly.ai/api/mcp/v1?org_id=<id>` as the server URL.
 
 Optional connectivity pre-check (distinguishes network problems from OAuth problems before any client is involved):
 
 ```bash
-curl -s -o /dev/null -w "%{http_code}" -X POST https://app.geoly.ai/api/mcp \
+curl -s -o /dev/null -w "%{http_code}" -X POST https://app.geoly.ai/api/mcp/v1 \
   -H "content-type: application/json" \
   -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}'
 ```
