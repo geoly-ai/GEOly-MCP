@@ -140,6 +140,8 @@ curl -s -o /dev/null -w "%{http_code}" -X POST https://app.geoly.ai/api/mcp \
 
 Up to 53 read-mostly tools across: brand KPIs and daily trends, prompt-level visibility and AI answers, citation domains/pages, competitors and sentiment, GEO site audits, site traffic (GA4 / Cloudflare), market intelligence (topic leaderboards, brand comparison, category whitespace, brand momentum, AI-search demand with territory maps, the cross-category AI shelf leaderboard, product deep-dives), public source domains (AI DA scorecards, source-to-brand conduits), and 7 write tools (create prompt/topic/competitor, archive a prompt, edit prompt tags, move prompts into a topic, trigger monitoring). The tool surface adapts to plan and granted permissions (a read-only multi-workspace connection on Grow or above sees 47); related reads share one tool and are picked with a `view` / `mode` / `section` / `source` parameter — see the [README](./README.md#tools) for the full catalog.
 
+**Pre-0.7.0 tool names** (34, hidden from the tool list) answer until **2026-11-30** and are then removed; successful calls carry a `_deprecated` block whose `sunset` field holds that date and whose `use` field names the replacement. `get_competitor_overview`, `get_brand_citations_daily` and `get_content_opportunities` are already removed (free `TOOL_REMOVED` error until then). The retired `mode` values of `get_brand_search_queries` and `get_public_search_queries` are deleted and `mode` is required on both. Old → new mappings: [README § Versioning](./README.md#versioning).
+
 ## Troubleshooting
 
 - **401 loop, browser never opens** — client lacks remote-OAuth support. Use the `mcp-remote` bridge or a `geom_` token.

@@ -213,7 +213,9 @@ geoly call get_brand_overview --time_range 30d
 
 - **`https://app.geoly.ai/api/mcp` 就是 GEOly MCP v1**——即上面列出的工具面。每个响应都带 `GEOly-MCP-Version: 1` 头，initialize 时服务端也会声明版本（`serverInfo.version` 为 `1.0.0`，server instructions 首段写明版本与政策）。
 - **版本政策与 GEOly Agent API（`GEOly-API-Version: 1`）同一条**：旧版本留着跑、不维护、不下线。真有破坏性改动才会在新路径上开 v2，`/api/mcp` 原样保留 v1；新增工具、视图、可选参数都在 v1 上做，不升版本。目前没有 v2。
-- **0.7.0 精简之前的旧工具名**（34 个，例如 `compare_public_brands`、`get_competitor_overview`、`list_citation_domains`）不再出现在工具列表里，但在 v1 上作为隐藏兼容名继续可调——不维护、不设到期。已有脚本不受影响；新工作请一律用上面列出的工具名。
+- **0.7.0 精简之前的旧工具名**（34 个，例如 `compare_public_brands`、`list_citation_domains`）不再出现在工具列表里，在 v1 上**可调用到 2026-11-30，之后移除**（调用返回 `Tool … not found`）。用旧名调用成功时，返回顶层带可机读的 `_deprecated` 块：`sunset` 是移除日期，`use` 是应改用的写法。旧名 → 新写法见 [geoly.ai/open/mcp](https://geoly.ai/zh/open/mcp#migration) 与技能的 [`tools-catalog`](https://github.com/geoly-ai/agent-skills/blob/main/skills/geoly-mcp/references/tools-catalog.md)。
+- **已移除**：`get_competitor_overview`、`get_brand_citations_daily`、`get_content_opportunities` 无法一对一替换，到 2026-11-30 前只返回免费的 `TOOL_REMOVED` 错误并给出替代写法（`get_platform_matrix` `dimension="competitor"`、`query_analytics` `dataset="brand_citations_daily"`、`get_citation_overview` `section="table"` + `gap_only=true`）。
+- **弃用 mode 已删除**：`get_brand_search_queries` 的 `roots` / `root_detail` / `topic_roots` 与 `get_public_search_queries` 的 `queries` / `themes` / `brand_landscape` / `prompt_map` 不再存在，两个工具的 `mode` 现在必填。
 
 ## 套餐与访问
 
