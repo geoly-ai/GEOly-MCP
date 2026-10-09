@@ -12,20 +12,22 @@
 云端托管、streamable HTTP、浏览器内 OAuth。一个 URL，本地零部署：
 
 ```
-https://app.geoly.ai/api/mcp
+https://app.geoly.ai/api/mcp/v1
 ```
+
+`/api/mcp/v1` 是 GEOly MCP v1 的带版本正式地址；不带版本的 `https://app.geoly.ai/api/mcp` 完全等同、继续保留，已有配置无需改动。
 
 ## 你的 agent 能做什么
 
 - **拉取与应用内完全一致的 KPI** —— 分 AI 平台的 AIGVR 得分、提及率、引用率（`get_brand_overview`），每日趋势，以及免 SQL 的受控聚合分析（`query_analytics`）。
-- **发现盲区。** 哪些买家问题从不提及你的品牌（`get_prompt_mention_rates`）？哪些 prompt 你的域名拿不到引用（`get_content_opportunities`）？
-- **品牌硬碰硬对比** —— 2–4 个品牌在可见度、覆盖面、引用、品类排名上并排比较（`compare_public_brands`）。
+- **发现盲区。** 哪些买家问题从不提及你的品牌（`get_prompt_list`，`view="mention_rates"`）？AI 提到竞品却没提你时，引用的是哪些域名（`get_citation_overview`，`section="table"`、`gap_only=true`）？
+- **品牌硬碰硬对比** —— 2–4 个品牌在可见度、覆盖面、引用、品类排名上并排比较（`get_public_brand`，传 `brand_ids`）。
 - **绘制品类空白地图** —— 把品类下每个话题划分为优势区（covered / leading / close / defend）与机会区（prioritize / gap / watch）（`get_category_whitespace`）。
 - **追踪动量。** 谁在 AI 回答中的 Share of Mention 环比上升、谁在下滑（`get_category_brand_momentum`）？
 - **看清 AI 搜索需求** —— 用户在你的产品领域实际问 AI 什么、哪些品牌赢下了这些回答、每个需求词根领地被谁占住（`get_public_search_queries`）。
-- **盯住 AI 货架。** 全品类 AI 最爱推荐哪些商品、谁在周环比蹿升（`list_public_shopping_boards`），任一商品的完整 AI 面孔（`get_public_shopping_product_detail`）。
-- **量化竞争难度** —— 每个话题一个 0–100 的"AI 时代关键词难度"（`get_topic_competition_difficulty`）。
-- **剖析 AI 认知画像。** AI 模型如何描述一个品牌？认知维度、正负极性、原文证据（`get_public_brand_perception`）。
+- **盯住 AI 货架。** 全品类 AI 最爱推荐哪些商品、谁在周环比蹿升（`list_public_shopping_products`，`view="boards"`），任一商品的完整 AI 面孔（`get_public_shopping_product_detail`）。
+- **量化竞争难度** —— 每个话题一个 0–100 的"AI 时代关键词难度"（`get_public_topic`，`view="difficulty"`）。
+- **剖析 AI 认知画像。** AI 模型如何描述一个品牌？认知维度、正负极性、原文证据（`get_public_brand`，`view="perception"`）。
 - **审计 AI 就绪度** —— 覆盖可访问性、结构化数据、内容结构、技术项的 GEO 站点审计（`get_audit_detail`）。
 
 ## 接好之后可以这样问
@@ -47,7 +49,7 @@ https://app.geoly.ai/api/mcp
 ### Claude Code
 
 ```bash
-claude mcp add --transport http geoly https://app.geoly.ai/api/mcp
+claude mcp add --transport http geoly https://app.geoly.ai/api/mcp/v1
 ```
 
 ### Cursor
@@ -60,7 +62,7 @@ claude mcp add --transport http geoly https://app.geoly.ai/api/mcp
 {
   "mcpServers": {
     "geoly": {
-      "url": "https://app.geoly.ai/api/mcp"
+      "url": "https://app.geoly.ai/api/mcp/v1"
     }
   }
 }
@@ -68,11 +70,11 @@ claude mcp add --transport http geoly https://app.geoly.ai/api/mcp
 
 ### Claude Desktop
 
-设置 → Connectors → **Add custom connector**，URL 填 `https://app.geoly.ai/api/mcp`，随后按浏览器里的 OAuth 授权流程走完即可。
+设置 → Connectors → **Add custom connector**，URL 填 `https://app.geoly.ai/api/mcp/v1`，随后按浏览器里的 OAuth 授权流程走完即可。
 
 ### ChatGPT
 
-在 ChatGPT 设置里开启 connectors 的开发者模式，添加自定义 connector，URL 填 `https://app.geoly.ai/api/mcp`，完成 OAuth 登录。没错——你可以在 ChatGPT 里问自己品牌在 ChatGPT 里的可见度。
+在 ChatGPT 设置里开启 connectors 的开发者模式，添加自定义 connector，URL 填 `https://app.geoly.ai/api/mcp/v1`，完成 OAuth 登录。没错——你可以在 ChatGPT 里问自己品牌在 ChatGPT 里的可见度。
 
 ### VS Code（GitHub Copilot）
 
@@ -81,7 +83,7 @@ claude mcp add --transport http geoly https://app.geoly.ai/api/mcp
 或命令行一键添加：
 
 ```bash
-code --add-mcp '{"name":"geoly","type":"http","url":"https://app.geoly.ai/api/mcp"}'
+code --add-mcp '{"name":"geoly","type":"http","url":"https://app.geoly.ai/api/mcp/v1"}'
 ```
 
 ### Codex CLI
@@ -101,7 +103,7 @@ codex plugin add geoly-mcp@geoly
 {
   "mcpServers": {
     "geoly": {
-      "serverUrl": "https://app.geoly.ai/api/mcp"
+      "serverUrl": "https://app.geoly.ai/api/mcp/v1"
     }
   }
 }
@@ -110,7 +112,7 @@ codex plugin add geoly-mcp@geoly
 ### Gemini CLI
 
 ```bash
-gemini mcp add --transport http geoly https://app.geoly.ai/api/mcp
+gemini mcp add --transport http geoly https://app.geoly.ai/api/mcp/v1
 ```
 
 或写入 `~/.gemini/settings.json`：
@@ -119,7 +121,7 @@ gemini mcp add --transport http geoly https://app.geoly.ai/api/mcp
 {
   "mcpServers": {
     "geoly": {
-      "httpUrl": "https://app.geoly.ai/api/mcp"
+      "httpUrl": "https://app.geoly.ai/api/mcp/v1"
     }
   }
 }
@@ -134,7 +136,7 @@ Cline 已原生支持远程 server（注意 `streamableHttp` 是驼峰写法）�
   "mcpServers": {
     "geoly": {
       "type": "streamableHttp",
-      "url": "https://app.geoly.ai/api/mcp"
+      "url": "https://app.geoly.ai/api/mcp/v1"
     }
   }
 }
@@ -151,7 +153,7 @@ Cline 已原生支持远程 server（注意 `streamableHttp` 是驼峰写法）�
   "mcpServers": {
     "geoly": {
       "command": "npx",
-      "args": ["-y", "mcp-remote", "https://app.geoly.ai/api/mcp"]
+      "args": ["-y", "mcp-remote", "https://app.geoly.ai/api/mcp/v1"]
     }
   }
 }
@@ -178,41 +180,50 @@ geoly call get_brand_overview --time_range 30d
 | **OAuth（默认）** | 只配 URL、不配任何凭据。首次调用返回标准挑战（RFC 9728 protected-resource metadata），客户端自动跳浏览器授权页：登录、选择要共享的工作区、核对权限矩阵。 | 按资源逐项授予读/写——读默认勾选，写默认关闭、需要手动勾选 |
 | **静态 token（CI / 无头环境）** | 在 GEOly 工作区设置中生成 `geom_...` token，以 `Authorization: Bearer geom_...` 携带。 | 恒为只读 |
 
-代理商与多工作区用户：一条连接可以覆盖你所属的全部工作区，也可以用 `https://app.geoly.ai/api/mcp?org_id=<id>` 锁定单个工作区（id 可通过 `list_organizations` 工具获取）。
+代理商与多工作区用户：一条连接可以覆盖你所属的全部工作区，也可以用 `https://app.geoly.ai/api/mcp/v1?org_id=<id>` 锁定单个工作区（id 可通过 `list_organizations` 工具获取）。
 
 ## 安全与数据边界
 
 - server 只读取你在 OAuth 授权页明确共享的工作区数据，绝不越界。
-- 写权限在授权页按资源逐项开启，且只覆盖 4 个工具（建 prompt / 话题 / 竞品、触发监控）。多工作区连接与静态 token 恒为只读，无例外。
+- 写权限在授权页按资源逐项开启，且只覆盖 7 个工具（建 prompt / 话题 / 竞品、归档或恢复 prompt、编辑 prompt 标签、把 prompt 移入话题、触发监控）。多工作区连接与静态 token 恒为只读，无例外。
 - 随时可在 GEOly 工作区设置中吊销连接，客户端缓存的凭据立即失效。
 - 端点是 TLS 上的无状态 streamable HTTP，不在你的机器上安装或执行任何东西。
 
 ## 工具
 
-60+ 个工具。工具集合会随访问权限自适应——单品牌连接不出现路由类工具，只读连接不出现写入类工具。完整清单见 [英文版 README](https://github.com/geoly-ai/GEOly-MCP/blob/main/README.md#tools)，这里列分组概览：
+最多 53 个工具。工具集合会随访问权限自适应——单品牌连接不出现路由选择类工具，只读连接不出现写入类工具，市场情报工具需要 Grow 套餐（Grow 及以上的只读多工作区连接可见 47 个）。相关读取合并在同一个工具里，用 `view` / `mode` / `section` / `source` / `window_caliber` 参数选视图；传了属于其他视图的参数，调用执行前就会被拒绝。完整清单见 [英文版 README](https://github.com/geoly-ai/GEOly-MCP/blob/main/README.md#tools)，这里列分组概览：
 
 | 分组 | 数量 | 内容（代表工具） |
 | --- | --- | --- |
-| 品牌监控 — 总览与 KPI | 4 | AIGVR/提及率/引用率（`get_brand_overview`）、受控聚合（`query_analytics`） |
-| 品牌监控 — prompt 与回答 | 8 | prompt 详情（`get_prompt_detail`）、执行历史（`list_prompt_records`）、盲区发现（`get_prompt_mention_rates`） |
-| 品牌监控 — 引用、域名与页面 | 5 | 引用域名分布（`get_citation_overview`）、内容机会（`get_content_opportunities`） |
-| 品牌监控 — 竞品、话题与情感 | 9 | 竞品对比（`get_competitor_overview`）、竞品极性榜（`get_competitor_polarity`）、风险语境信源（`get_risk_context_sources`）、情感面板（`get_sentiment_dashboard`） |
-| 站点审计与 GA4 | 4 | GEO 审计详情（`get_audit_detail`）、GA4 流量（`get_ga4_traffic_data`） |
-| 市场情报 — 检索与浏览 | 4 | 实体解析（`search_public_entities`）、话题浏览（`list_public_topics`） |
-| 市场情报 — 话题 | 10 | 品牌榜（`get_public_topic_brand_leaderboard`）、竞争难度（`get_topic_competition_difficulty`） |
-| 市场情报 — 品牌 | 5 | 排名 × AI 引用（`get_public_brand_rank_citation`）、多品牌对比（`compare_public_brands`）、AI 认知画像（`get_public_brand_perception`） |
+| 品牌监控 — 总览与 KPI | 3 | AIGVR/提及率/引用率（`get_brand_overview`）、受控聚合与每日趋势（`query_analytics`，`dataset="brand_citations_daily"`） |
+| 品牌监控 — prompt 与回答 | 8 | prompt 列表与盲区发现（`get_prompt_list`，`view="table"` / `"mention_rates"`）、执行历史（`list_prompt_records`，`latest_per_platform=true` 取各平台最新一条）、品牌回答表与提及样本（`list_brand_answers`，`view="table"` / `"mention_samples"`） |
+| 品牌监控 — 引用、域名与页面 | 3 | 引用域名看板与域名表（`get_citation_overview`，`section="board"` / `"table"`，`gap_only=true` 只看缺口）、单 URL 详情（`get_url_detail`，`window_caliber="rolling"` / `"page"`） |
+| 品牌监控 — 竞品、话题与情感 | 7 | 品牌榜（`get_brand_board`）、平台矩阵与竞品对比（`get_platform_matrix`，`competitor_limit` + `include_totals=true`）、AI 裁决（`get_verdict`，`view="competitors"` 竞品偏好榜 / `"sources"` 被引信源）、情感面板（`get_sentiment_dashboard`） |
+| 站点审计与站点流量 | 3 | GEO 审计报告与逐页结果（`get_audit_detail`，`section="report"` / `"pages"`）、站点流量（`get_traffic_data`，`source="ga4"` / `"cloudflare"`） |
+| 市场情报 — 检索与浏览 | 3 | 实体解析（`search_public_entities`）、话题浏览（`list_public_topics`）、语言区/平台/数据窗口（`get_public_coverage`，`view="locales"` / `"platforms"` / `"data_window"`） |
+| 市场情报 — 话题 | 3 | 话题多视图（`get_public_topic`：品牌榜 `view="brand_leaderboard"`、竞争难度 `view="difficulty"` 等 8 个视图）、prompt 与单条回答下钻（`get_public_topic_prompt_detail`、`get_public_topic_record_detail`） |
+| 市场情报 — 品牌 | 1 | 公开品牌多视图（`get_public_brand`）：多品牌对比（传 `brand_ids`）、AI 认知画像（`view="perception"`）、排名 × AI 引用（`view="rank_citation"`） |
 | 市场情报 — 品类 | 3 | 空白机会地图（`get_category_whitespace`）、品牌动量（`get_category_brand_momentum`） |
-| 市场情报 — AI 搜索 query | 2 | AI 搜索需求全景+需求领地（`get_public_search_queries`） |
-| 市场情报 — 购物 | 4 | AI 货架榜（`list_public_shopping_boards`）、商品全景（`get_public_shopping_product_detail`） |
+| 市场情报 — AI 搜索 query | 1 | AI 搜索需求全景+需求领地（`get_public_search_queries`，`mode="territories"` / `"query_detail"`） |
+| 市场情报 — 购物 | 2 | 品类货架与 AI 货架榜（`list_public_shopping_products`，`view="products"` / `"boards"`）、商品全景（`get_public_shopping_product_detail`，`mode="full"` / `"card"`） |
 | 公开信源域名 | 3 | 最常被引信源榜（`get_public_sources_overview`）、源×品牌导管（`get_public_source_brand_conduit`） |
-| 写入工具 | 4 | 建 prompt/话题/竞品、立即触发监控（`trigger_prompt`） |
-| 报告、发现与路由 | 5 | Agent Readiness 报告（`get_agent_ready_scan_detail`）、工作区列表（`list_organizations`） |
+| 写入工具 | 7 | 建 prompt/话题/竞品、归档 prompt（`archive_prompt`）、批量改标签、移动到话题、立即触发监控（`trigger_prompt`） |
+| 报告 | 1 | Agent Readiness 扫描历史与详情（`get_agent_ready_scans`，带 `scan_id` 取详情） |
+| 发现与路由 | 6 | 一次性定位（`get_brand_context`）、额度查询（`get_quota`）、工作区列表（`list_organizations`） |
+
+## 版本
+
+- **`https://app.geoly.ai/api/mcp/v1` 就是 GEOly MCP v1**——即上面列出的工具面。不带版本的 `https://app.geoly.ai/api/mcp` 是同一处理器、行为完全一致，保留给现有配置。每个响应都带 `GEOly-MCP-Version: 1` 头，initialize 时服务端也会声明版本（`serverInfo.version` 为 `1.0.0`，server instructions 首段写明版本与政策）。
+- **版本政策与 GEOly Agent API（`GEOly-API-Version: 1`）同一条**：旧版本留着跑、不维护、不下线。真有破坏性改动才会在新路径 `/api/mcp/v2` 上开 v2，`/api/mcp/v1`（以及 `/api/mcp`）原样保留 v1；新增工具、视图、可选参数都在 v1 上做，不升版本。目前没有 v2。
+- **0.7.0 精简之前的旧工具名**（34 个，例如 `compare_public_brands`、`list_citation_domains`）不再出现在工具列表里，在 v1 上**可调用到 2026-11-30，之后移除**（调用返回 `Tool … not found`）。用旧名调用成功时，返回顶层带可机读的 `_deprecated` 块：`sunset` 是移除日期，`use` 是应改用的写法。旧名 → 新写法见 [geoly.ai/open/mcp](https://geoly.ai/zh/open/mcp#migration) 与技能的 [`tools-catalog`](https://github.com/geoly-ai/agent-skills/blob/main/skills/geoly-mcp/references/tools-catalog.md)。
+- **已移除**：`get_competitor_overview`、`get_brand_citations_daily`、`get_content_opportunities` 无法一对一替换，到 2026-11-30 前只返回免费的 `TOOL_REMOVED` 错误并给出替代写法（`get_platform_matrix` `dimension="competitor"`、`query_analytics` `dataset="brand_citations_daily"`、`get_citation_overview` `section="table"` + `gap_only=true`）。
+- **弃用 mode 已删除**：`get_brand_search_queries` 的 `roots` / `root_detail` / `topic_roots` 与 `get_public_search_queries` 的 `queries` / `themes` / `brand_landscape` / `prompt_map` 不再存在，两个工具的 `mode` 现在必填。
 
 ## 套餐与访问
 
 | 工具组 | 可用范围 |
 | --- | --- |
-| 品牌监控、审计、GA4、报告 | 任何有效 GEOly 工作区 |
+| 品牌监控、审计、站点流量（GA4 / Cloudflare）、报告 | 任何有效 GEOly 工作区 |
 | 市场情报（话题/品牌/品类/搜索 query/购物） | Grow 及以上套餐 |
 | 公开信源域名 | 所有连接 |
 | 写入工具 | OAuth 授权页勾选写权限、单工作区连接 |
@@ -223,7 +234,7 @@ geoly call get_brand_overview --time_range 30d
 
 - **首次调用返回 401** —— 这是 OAuth 握手的设计行为，客户端应自动弹浏览器；如果没弹，说明客户端不支持远程 OAuth，用上文的 `mcp-remote` 桥接。
 - **402 Payment Required** —— 工作区订阅未生效。
-- **看不到市场情报工具** —— 话题/品牌/品类/搜索 query/购物这几组工具需要 Grow 及以上套餐。（公开信源域名那 2 个工具不受此限制，所有连接可用。）
+- **看不到市场情报工具** —— 话题/品牌/品类/搜索 query/购物这几组工具需要 Grow 及以上套餐。（公开信源域名那 3 个工具不受此限制，所有连接可用。）
 - **看不到写入工具** —— 授权时没勾写权限、在用静态 token、或连接跨了多个工作区（写入仅限单工作区）。重新授权并勾选所需的写权限。
 - **浏览器直接打开 URL 显示 405** —— 正常现象；端点是 POST-only 的 streamable HTTP，不是网页。
 
